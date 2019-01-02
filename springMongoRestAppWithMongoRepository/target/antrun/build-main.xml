@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <delete file="/Users/jitheshrajan/GITWorkingCopy/web-services/LivesquawkRestService/target/classes/application.properties"/>
+  <copy file="src/main/resources/application.live.properties" tofile="/Users/jitheshrajan/GITWorkingCopy/web-services/LivesquawkRestService/target/classes/application.properties"/>
+</target>
+</project>

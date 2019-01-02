@@ -1,0 +1,7 @@
+-------------------------------------------------------------------------------
+Test set: com.edel.livesquawk.application.ApplicationTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.269 s <<< FAILURE! - in com.edel.livesquawk.application.ApplicationTest
+initializationError(com.edel.livesquawk.application.ApplicationTest)  Time elapsed: 0.009 s  <<< ERROR!
+java.lang.Exception: No runnable methods
+
