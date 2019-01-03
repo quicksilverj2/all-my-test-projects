@@ -1,0 +1,17 @@
+config.topic.name=moengage-config
+config.kafka.brokers=localhost:9093,localhost:9094,localhost:9095
+
+config.kakfka.groupid=moengagereceiver
+
+# Jedis Cluster pool
+jedis.cluster.instance=10.250.1.167:4001
+jedis.cluster.instance=10.250.1.167:4002
+jedis.cluster.instance=10.250.1.167:4003
+jedis.cluster.instance=10.250.1.167:4004
+jedis.cluster.instance=10.250.1.167:4005
+jedis.cluster.instance=10.250.1.167:4006
+
+jedis.cluster.maxTotal=40
+jedis.cluster.maxIdle=1
+jedis.cluster.minIdle=1
+jedis.cluster.maxWait=10000

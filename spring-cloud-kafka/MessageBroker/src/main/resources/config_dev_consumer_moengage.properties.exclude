@@ -1,0 +1,4 @@
+config.topic.name=moengage-config
+config.kafka.brokers=localhost:9093,localhost:9094,localhost:9095
+
+config.kakfka.groupid=moengagereceiver

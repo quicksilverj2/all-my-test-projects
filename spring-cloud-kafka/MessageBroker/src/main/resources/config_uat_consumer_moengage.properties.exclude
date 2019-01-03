@@ -1,0 +1,4 @@
+config.topic.name=moengage-config
+config.kafka.brokers=10.250.26.126:9093,10.250.26.126:9094,10.250.26.126:9092
+
+config.kakfka.groupid=moengagereceiver

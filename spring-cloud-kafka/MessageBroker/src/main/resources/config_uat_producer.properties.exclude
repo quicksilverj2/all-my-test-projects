@@ -1,0 +1,5 @@
+config.orderstreamer.ip=10.250.26.126
+config.orderstreamer.port=9307
+
+config.topic.name=trade-confi-
+config.kafka.brokers=10.250.26.126:9093,10.250.26.126:9094,10.250.26.126:9092

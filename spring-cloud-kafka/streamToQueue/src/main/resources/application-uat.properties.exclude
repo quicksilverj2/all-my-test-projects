@@ -1,0 +1,37 @@
+quote.stream.connector.ip=10.250.26.126
+quote.stream.connector.port=9407
+
+server.port=10901
+
+logging.level.root=INFO
+logging.file=/Users/jitheshrajan/Documents/WorkingTextData/KafkaAppLogs/streamAppLogs/streamLoad.log
+
+spring.kafka.admin.fail-fast=false
+spring.kafka.admin.client-id=edelmw-stream-loader-app
+spring.kafka.admin.bootstrap-servers=10.250.26.126:9092,10.250.26.126:9093,10.250.26.126:9094
+
+spring.cloud.stream.kafka.binder.brokers=10.250.26.126:9092,10.250.26.126:9093,10.250.26.126:9094
+spring.cloud.stream.kafka.streams.binder.brokers=10.250.26.126:9092,10.250.26.126:9093,10.250.26.126:9094
+spring.cloud.stream.kafka.binder.zkNodes=10.250.26.126
+spring.cloud.stream.kafka.binder.defaultZkPort=2181
+spring.cloud.stream.kafka.streams.binder.configuration.commit.interval.ms = 1000
+spring.cloud.stream.kafka.streams.binder.configuration.default.key.serde=org.apache.kafka.common.serialization.Serdes$StringSerde
+spring.cloud.stream.kafka.streams.binder.configuration.default.value.serde=org.apache.kafka.common.serialization.Serdes$StringSerde
+
+
+
+#
+# quote packets out
+spring.cloud.stream.bindings.streamtoqueue-quote-out.destination=raw-quote-packets-topic
+spring.cloud.stream.bindings.streamtoqueue-quote-out.producer.header-mode=raw
+#spring.cloud.stream.bindings.streamtoqueue-quote-out.producer.partitionSelectorClass=com.edel.stream.streamtoqueue.util.QuotePartitionSelector
+spring.cloud.stream.bindings.streamtoqueue-quote-out.producer.partitionCount=16
+spring.cloud.stream.bindings.streamtoqueue-quote-out.producer.partition-key-expression=headers['partitionKey']
+#
+# quote packets in
+spring.cloud.stream.bindings.streamtoqueue-quote-in.destination=raw-quote-packets-topic
+spring.cloud.stream.bindings.streamtoqueue-quote-in.group=raw-quote-packets-group
+spring.cloud.stream.bindings.streamtoqueue-quote-in.consumer.partitioned=true
+#spring.cloud.stream.bindings.streamtoqueue-quote-in.consumer.concurrency=4
+spring.cloud.stream.bindings.streamtoqueue-quote-in.consumer.header-mode=raw
+

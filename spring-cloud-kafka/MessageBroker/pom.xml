@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.edel.messagebroker</groupId>
+    <artifactId>messagebroker</artifactId>
+    <version>1.0.0</version>
+
+    <!--<parent>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-parent</artifactId>-->
+        <!--<version>2.0.2.RELEASE</version>-->
+    <!--</parent>-->
+
+    <packaging>jar</packaging>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <!-- put the default-jar in the none phase to skip it from being
+                            created -->
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>producer</id>
+            <build>
+                <finalName>mb-producer</finalName>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <delete file="src/main/resources/config.properties" />
+                                        <delete file="src/main/resources/jslog.properties" />
+                                        <delete file="src/main/assembly/dist.xml" />
+
+                                        <copy file="src/main/resources/config_${environ}_producer.properties.exclude"
+                                              tofile="src/main/resources/config.properties" />
+                                        <copy file="src/main/resources/jslog_${environ}_producer.properties.exclude"
+                                              tofile="src/main/resources/jslog.properties" />
+                                        <copy file="src/main/assembly/dist_producer.xml"
+                                              tofile="src/main/assembly/dist.xml" />
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>jar-with-dependencies</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <descriptorRefs>
+                                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                                    </descriptorRefs>
+                                    <archive>
+                                        <manifest>
+                                            <mainClass>com.edel.messagebroker.producer.ProducerMain</mainClass>
+                                        </manifest>
+                                    </archive>
+                                </configuration>
+                            </execution>
+                            <!-- <execution> <id>dist</id> <phase>package</phase> <goals> <goal>single</goal>
+                                </goals> <configuration> <descriptors> <descriptor>src/main/assembly/dist.xml</descriptor>
+                                </descriptors> </configuration> </execution> -->
+                            <execution>
+                                <id>dist</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <descriptors>
+                                        <descriptor>src/main/assembly/dist.xml</descriptor>
+                                    </descriptors>
+                                </configuration>
+                            </execution>
+                        </executions>
+
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>consumer</id>
+            <build>
+                <finalName>mb-consumer</finalName>
+
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <delete file="src/main/resources/config.properties" />
+                                        <delete file="src/main/resources/jslog.properties" />
+                                        <delete file="src/main/assembly/dist.xml" />
+
+                                        <copy file="src/main/resources/config_${environ}_consumer.properties.exclude"
+                                              tofile="src/main/resources/config.properties" />
+                                        <copy file="src/main/resources/jslog_${environ}_consumer.properties.exclude"
+                                              tofile="src/main/resources/jslog.properties" />
+
+                                        <copy file="src/main/assembly/dist_consumer.xml"
+                                              tofile="src/main/assembly/dist.xml" />
+
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>jar-with-dependencies</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <descriptorRefs>
+                                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                                    </descriptorRefs>
+                                    <archive>
+                                        <manifest>
+                                            <mainClass>com.edel.messagebroker.consumer.ConsumerMain</mainClass>
+                                        </manifest>
+                                    </archive>
+                                </configuration>
+                            </execution>
+                            <!-- <execution> <id>dist</id> <phase>package</phase> <goals> <goal>single</goal>
+                                </goals> <configuration> <descriptors> <descriptor>src/main/assembly/dist.xml</descriptor>
+                                </descriptors> </configuration> </execution> -->
+                            <execution>
+                                <id>dist</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <descriptors>
+                                        <descriptor>src/main/assembly/dist.xml</descriptor>
+                                    </descriptors>
+                                </configuration>
+                            </execution>
+                        </executions>
+
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>consumer_moengage</id>
+            <build>
+                <finalName>mb-consumer-moengage</finalName>
+
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <delete file="src/main/resources/config.properties" />
+                                        <delete file="src/main/resources/jslog.properties" />
+                                        <delete file="src/main/assembly/dist.xml" />
+
+                                        <copy file="src/main/resources/config_${environ}_consumer_moengage.properties.exclude"
+                                              tofile="src/main/resources/config.properties" />
+                                        <copy file="src/main/resources/jslog_${environ}_consumer_moengage.properties.exclude"
+                                              tofile="src/main/resources/jslog.properties" />
+
+                                        <copy file="src/main/assembly/dist_consumer_moengage.xml"
+                                              tofile="src/main/assembly/dist.xml" />
+
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>jar-with-dependencies</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <descriptorRefs>
+                                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                                    </descriptorRefs>
+                                    <archive>
+                                        <manifest>
+                                            <mainClass>com.edel.messagebroker.consumer.MoEnConsumerMain</mainClass>
+                                        </manifest>
+                                    </archive>
+                                </configuration>
+                            </execution>
+                            <!-- <execution> <id>dist</id> <phase>package</phase> <goals> <goal>single</goal>
+                                </goals> <configuration> <descriptors> <descriptor>src/main/assembly/dist.xml</descriptor>
+                                </descriptors> </configuration> </execution> -->
+                            <execution>
+                                <id>dist</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <descriptors>
+                                        <descriptor>src/main/assembly/dist.xml</descriptor>
+                                    </descriptors>
+                                </configuration>
+                            </execution>
+                        </executions>
+
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>conductor</id>
+            <build>
+                <finalName>conductor</finalName>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <delete file="src/main/resources/config.properties" />
+                                        <delete file="src/main/resources/jslog.properties" />
+                                        <delete file="src/main/assembly/dist.xml" />
+
+                                        <copy file="src/main/resources/config_${environ}_conductor.properties.exclude"
+                                              tofile="src/main/resources/config.properties" />
+                                        <copy file="src/main/resources/jslog_${environ}_conductor.properties.exclude"
+                                              tofile="src/main/resources/jslog.properties" />
+                                        <copy file="src/main/assembly/dist_conductor.xml"
+                                              tofile="src/main/assembly/dist.xml" />
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>jar-with-dependencies</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <descriptorRefs>
+                                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                                    </descriptorRefs>
+                                    <archive>
+                                        <manifest>
+                                            <mainClass>com.edel.messagebroker.crons.ConductorMain</mainClass>
+                                        </manifest>
+                                    </archive>
+                                </configuration>
+                            </execution>
+                            <!-- <execution> <id>dist</id> <phase>package</phase> <goals> <goal>single</goal>
+                                </goals> <configuration> <descriptors> <descriptor>src/main/assembly/dist.xml</descriptor>
+                                </descriptors> </configuration> </execution> -->
+                            <execution>
+                                <id>dist</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <descriptors>
+                                        <descriptor>src/main/assembly/dist.xml</descriptor>
+                                    </descriptors>
+                                </configuration>
+                            </execution>
+                        </executions>
+
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>conductor_worker</id>
+            <build>
+                <finalName>conductor-worker</finalName>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <delete file="src/main/resources/config.properties" />
+                                        <delete file="src/main/resources/jslog.properties" />
+                                        <delete file="src/main/assembly/dist.xml" />
+
+                                        <copy file="src/main/resources/config_${environ}_conductor_worker.properties.exclude"
+                                              tofile="src/main/resources/config.properties" />
+                                        <copy file="src/main/resources/jslog_${environ}_conductor_worker.properties.exclude"
+                                              tofile="src/main/resources/jslog.properties" />
+                                        <copy file="src/main/assembly/dist_conductor_worker.xml"
+                                              tofile="src/main/assembly/dist.xml" />
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>jar-with-dependencies</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <descriptorRefs>
+                                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                                    </descriptorRefs>
+                                    <archive>
+                                        <manifest>
+                                            <mainClass>com.edel.messagebroker.crons.WorkerMain</mainClass>
+                                        </manifest>
+                                    </archive>
+                                </configuration>
+                            </execution>
+                            <!-- <execution> <id>dist</id> <phase>package</phase> <goals> <goal>single</goal>
+                                </goals> <configuration> <descriptors> <descriptor>src/main/assembly/dist.xml</descriptor>
+                                </descriptors> </configuration> </execution> -->
+                            <execution>
+                                <id>dist</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <descriptors>
+                                        <descriptor>src/main/assembly/dist.xml</descriptor>
+                                    </descriptors>
+                                </configuration>
+                            </execution>
+                        </executions>
+
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.6.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.edel.library</groupId>
+            <artifactId>edellibrary</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>1.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.kafka</groupId>-->
+            <!--<artifactId>spring-kafka</artifactId>-->
+        <!--</dependency>-->
+
+    </dependencies>
+
+   <properties>
+       <environ>dev</environ>
+   </properties>
+
+</project>

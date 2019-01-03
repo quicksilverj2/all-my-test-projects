@@ -1,0 +1,49 @@
+config.topic.name=trade-confi-
+config.kafka.brokers=10.250.26.126:9093,10.250.26.126:9094,10.250.26.126:9092
+config.kakfka.groupid=test
+
+config.topic.moengage=moengage-config
+config.kafka.moengage.brokers=10.250.26.126:9093,10.250.26.126:9094,10.250.26.126:9092
+
+# Jedis Cluster pool
+jedis.cluster.instance=10.250.1.167:4001
+jedis.cluster.instance=10.250.1.167:4002
+jedis.cluster.instance=10.250.1.167:4003
+jedis.cluster.instance=10.250.1.167:4004
+jedis.cluster.instance=10.250.1.167:4005
+jedis.cluster.instance=10.250.1.167:4006
+
+jedis.cluster.maxTotal=40
+jedis.cluster.maxIdle=10
+jedis.cluster.minIdle=4
+jedis.cluster.maxWait=10000
+
+mw.redis.generalpattern = EMT:MW:UAT:R:
+mw.redis.specificpattern = EMT:MW:UAT:NR:
+
+config.es.threadpoolcount=50
+config.es.timeout=60000
+
+config.redis.admin.base=MW:UAT:
+config.redis.admin.reconnect=500
+
+jedis.admin.instance=10.250.1.167:6379
+jedis.admin.maxTotal=100
+jedis.admin.maxIdle=2
+jedis.admin.minIdle=2
+jedis.admin.maxWait=10000
+
+config.trade.messsage=Dear <NAME>\, Your <ORDER> order of <SYMBOL> with <RATIO> qty has been executed at Rs <RUPEE> (<TIME>)
+config.trade.pending.message=Dear <NAME>\, Your <ORDER> order of <SYMBOL> of quantity <RATIO> has not been executed at price Rs.<RUPEE>. Would you like to change the order type to market to complete the order
+config.trade.title=Trade Confirmation
+
+jedis.sentinel.instance=10.250.1.167:6001
+jedis.sentinel.instance=10.250.1.167:6002
+jedis.sentinel.instance=10.250.1.167:6003
+jedis.sentinel.maxTotal=100
+jedis.sentinel.maxIdle=2
+jedis.sentinel.minIdle=2
+jedis.sentinel.maxWait=10000
+
+config.trade.redis.nse.time=15:15:00
+config.trade.redis.cds.time=16:45:00
